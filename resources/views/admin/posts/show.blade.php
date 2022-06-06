@@ -35,8 +35,16 @@
                     <h1 class="card-title">{{ $post->title }}</h1>
                 </div>
                 <div class="card-body">
+
                     <p class="card-text">{{ $category->name }}</p>
+
                     <p class="card-text">{{ $post->content }}</p>
+                    <h6>Tags</h6>
+                    <p class="card-text tags">
+                        @forEach($post->tags as $tag)
+                        #{{ $tag->name }}
+                        @endforeach
+                    </p>
                 </div>
             </div>
         </div>

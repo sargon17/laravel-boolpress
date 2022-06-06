@@ -55,6 +55,16 @@
                         <textarea class="form-control @error('content') is-invalid @enderror" id="content" name="content" rows="3">{{ $post->content }}</textarea>
                         <div class="invalid-feedback">{{ $errors->first('content') }}</div>
                     </div>
+                       <div class="form-group">
+                        @foreach ($tags as $tag)
+                            <div class="form-check form-check-inline">
+                                <input class="form-check-input" type="checkbox" name="tags[]" value="{{ $tag->id }}" id="tag-{{ $tag->id }}" {{ $post->tags->contains($tag->id) ? 'checked' : '' }}>
+                                <label class="form-check-label" for="tag-{{ $tag->id }}">
+                                    {{ $tag->name }}
+                                </label>
+                            </div>
+                        @endforeach
+                    </div>
                     <button type="submit" class="btn btn-primary">Update</button>
                 </form>
             </div>
