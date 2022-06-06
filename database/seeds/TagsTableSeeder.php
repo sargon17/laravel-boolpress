@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Database\Seeder;
+use App\Tag;
 
 class TagsTableSeeder extends Seeder
 {
@@ -11,6 +12,19 @@ class TagsTableSeeder extends Seeder
      */
     public function run()
     {
-        $tags = ["development", "time management"];
+        $tags = [
+            "development",
+            "time management",
+            "laravel",
+            "vue",
+            "react",
+            "sass",
+        ];
+
+        foreach ($tags as $tag) {
+            Tag::create([
+                "name" => $tag,
+            ]);
+        }
     }
 }
