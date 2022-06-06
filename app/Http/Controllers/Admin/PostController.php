@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 
 use App\Post;
 use App\Category;
+use App\Tag;
 
 class PostController extends Controller
 {
@@ -29,7 +30,9 @@ class PostController extends Controller
     public function create()
     {
         $categories = Category::all();
-        return view("admin.posts.create", compact("categories"));
+        $tags = Tag::all();
+
+        return view("admin.posts.create", compact(["categories", "tags"]));
     }
 
     /**
@@ -59,6 +62,9 @@ class PostController extends Controller
         $newPost->fill($postData);
         $newPost->slug = Post::createSlug($postData["title"]);
         $newPost->save();
+
+        $newPost->tags()->sync($request->tags);
+
         return redirect()->route("admin.posts.index");
     }
 
@@ -74,7 +80,8 @@ class PostController extends Controller
             abort(404);
         }
         $category = Category::find($post->category_id);
-        return view("admin.posts.show", compact("post", "category"));
+        $tags = $post->tags;
+        return view("admin.posts.show", compact("post", "category", "tags"));
     }
 
     /**
@@ -89,7 +96,8 @@ class PostController extends Controller
             abort(404);
         }
         $categories = Category::all();
-        return view("admin.posts.edit", compact("post", "categories"));
+        $tags = Tag::all();
+        return view("admin.posts.edit", compact("post", "categories", "tags"));
     }
 
     /**
