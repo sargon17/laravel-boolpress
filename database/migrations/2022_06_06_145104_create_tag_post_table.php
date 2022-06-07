@@ -24,7 +24,10 @@ class CreateTagPostTable extends Migration
                 }
 
                 if (!Schema::hasColumn("post_tag", "tag_id")) {
-                    $table->unsignedBigInteger("tag_id");
+                    $table
+                        ->unsignedBigInteger("tag_id")
+                        ->onDelete("cascade")
+                        ->onUpdate("cascade");
                     $table
                         ->foreign("tag_id")
                         ->references("id")
