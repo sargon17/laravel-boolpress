@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 use App\User;
 
@@ -47,9 +48,9 @@ class UserController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(User $user)
     {
-        //
+        return view("admin.users.show", compact("user"));
     }
 
     /**
@@ -58,9 +59,13 @@ class UserController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit(User $user)
     {
-        //
+        if (!$user) {
+            abort(404);
+        }
+
+        return view("admin.users.edit", compact("user"));
     }
 
     /**
@@ -70,9 +75,39 @@ class UserController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, User $user)
     {
-        //
+        $request->validate(
+            [
+                "name" => "required|max:250",
+                "email" => "required|email|max:250",
+                "avatar" => "nullable|image",
+                "cover" => "nullable|image",
+            ],
+            [
+                "name.required" => "The name is required",
+                "name.max" => "The name may not be greater than 250 characters",
+                "email.required" => "The email is required",
+                "email.email" => "The email must be a valid email address",
+                "email.max" =>
+                    "The email may not be greater than 250 characters",
+                "avatar.image" => "The avatar must be an image",
+                "cover.image" => "The cover must be an image",
+            ]
+        );
+
+        $userData = $request->all();
+        $user->fill($userData);
+        // $user->avatar = Storage::put("public/users", $request["avatar"]);
+        // $user->cover = Storage::put("public/users", $request["cover"]);
+        $user->avatar = $request->file("avatar")
+            ? Storage::put("public/users", $request->file("avatar"))
+            : $user->avatar;
+        $user->cover = $request->file("cover")
+            ? Storage::put("public/users", $request->file("cover"))
+            : $user->cover;
+        $user->update();
+        return redirect()->route("admin.users.show", $user);
     }
 
     /**
