@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 use App\Post;
 use App\Category;
@@ -61,6 +62,7 @@ class PostController extends Controller
         $newPost = new Post();
         $newPost->fill($postData);
         $newPost->slug = Post::createSlug($postData["title"]);
+        $newPost->image = Storage::put("public/posts", $request->file("image"));
         $newPost->save();
 
         $newPost->tags()->sync($request->tags);
