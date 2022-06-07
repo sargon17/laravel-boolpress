@@ -15,8 +15,8 @@
     <div class="row">
         <div class="col card">
             <div class="card-body">
-                <h1 class="card-title">Crea nuovo post</h1>
-                <form action="{{ route('admin.posts.store') }}" method="POST">
+                <h1 class="card-title">Create a new post</h1>
+                <form action="{{ route('admin.posts.store') }}" method="POST" enctype="multipart/form-data">
                     @csrf
                     <div class="form-group">
                         @if ($errors->any())
@@ -28,7 +28,7 @@
                                 </ul>
                             </div>
                         @endif
-                        <label for="title">Titolo</label>
+                        <label for="title">Heading</label>
                         <input type="text" class="form-control  @error('title') is-invalid @enderror" id="title" name="title" placeholder="Titolo" value=" {{ old('title') }} ">
                         <div class="invalid-feedback">{{ $errors->first('title') }}</div>
                     </div>
@@ -53,6 +53,11 @@
                         <label for="content">Content</label>
                         <textarea class="form-control  @error('content') is-invalid @enderror" id="content" name="content" placeholder="Contenuto" rows="10"> {{ old('content') }} </textarea>
                         <div class="invalid-feedback">{{ $errors->first('content') }}</div>
+                    </div>
+                    <div class="form-group">
+                        <label for="image">Image</label>
+                        <input type="file" class="form-control-file" id="image" name="image">
+                        <div class="invalid-feedback">{{ $errors->first('image') }}</div>
                     </div>
                     <div class="form-group">
                         @foreach ($tags as $tag)
