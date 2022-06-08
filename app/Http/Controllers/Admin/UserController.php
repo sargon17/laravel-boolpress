@@ -81,8 +81,8 @@ class UserController extends Controller
             [
                 "name" => "required|max:250",
                 "email" => "required|email|max:250",
-                "avatar" => "nullable|image",
-                "cover" => "nullable|image",
+                "avatar" => "nullable|mimes:jpg,png|max:2048",
+                "cover" => "nullable|mimes:jpg,png|max:2048",
             ],
             [
                 "name.required" => "The name is required",
@@ -93,6 +93,12 @@ class UserController extends Controller
                     "The email may not be greater than 250 characters",
                 "avatar.image" => "The avatar must be an image",
                 "cover.image" => "The cover must be an image",
+                "avatar.max" =>
+                    "The avatar may not be greater than 2048 kilobytes",
+                "cover.max" =>
+                    "The cover may not be greater than 2048 kilobytes",
+                "avatar.mimes" => "The avatar must be a file of type: jpg, png",
+                "cover.mimes" => "The cover must be a file of type: jpg, png",
             ]
         );
 
@@ -101,10 +107,10 @@ class UserController extends Controller
         // $user->avatar = Storage::put("public/users", $request["avatar"]);
         // $user->cover = Storage::put("public/users", $request["cover"]);
         $user->avatar = $request->file("avatar")
-            ? Storage::put("public/users", $request->file("avatar"))
+            ? Storage::put("users", $request->file("avatar"))
             : $user->avatar;
         $user->cover = $request->file("cover")
-            ? Storage::put("public/users", $request->file("cover"))
+            ? Storage::put("users", $request->file("cover"))
             : $user->cover;
         $user->update();
         return redirect()->route("admin.users.show", $user);
