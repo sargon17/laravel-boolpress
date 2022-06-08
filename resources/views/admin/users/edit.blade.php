@@ -36,9 +36,11 @@
          <div class="form-group">
              <h3>Images</h3>
              <label for="avatar">Your Avatar</label>
-             <input type="file" class="form-control-file" id="avatar" name="avatar">
+             <input type="file" class="form-control-file @error('avatar') is-invalid @enderror" id="avatar" name="avatar">
+             <div class="invalid-feedback">{{ $errors->first('avatar') }}</div>
              <label for="cover">Cover</label>
-             <input type="file" class="form-control-file" id="cover" name="cover">
+             <input type="file" class="form-control-file @error('cover') is-invalid @enderror" id="cover" name="cover">
+             <div class="invalid-feedback">{{ $errors->first('cover') }}</div>
             </div>
                     <button type="submit" class="btn btn-primary">Update</button>
                 </form>
