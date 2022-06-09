@@ -1,5 +1,5 @@
 <template>
-    <div>hello mother fuckers</div>
+    <div>This is a homepage</div>
 </template>
 
 <script>
