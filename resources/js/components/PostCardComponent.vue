@@ -1,6 +1,6 @@
 <template>
     <div
-        class="row g-0 border rounded overflow-hidden flex-md-row mb-4 shadow-sm h-md-250 position-relative"
+        class="row g-0 border rounded overflow-hidden flex-md-row shadow-sm h-md-250 my-2 position-relative post-card"
     >
         <div class="col p-4 d-flex flex-column position-static">
             <strong class="d-inline-block mb-2 text-primary">
@@ -9,16 +9,14 @@
             <h3 class="mb-0">{{ post.title }}</h3>
             <div class="mb-1 text-muted">{{ post.created_at }}</div>
             <p class="card-text mb-auto">
-                {{ post.component }}
+                {{ post.content }}
             </p>
             <a href="#" class="stretched-link">Continue reading</a>
         </div>
-        <div class="col-auto d-none d-lg-block">
+        <div class="col m-0 p-0 img-wrapper">
             <img
-                class="bd-placeholder-img"
-                width="200"
-                height="250"
-                :src="'storage/' + post.image"
+                class="img-fluid"
+                :src="'/storage/' + post.image"
                 :alt="post.title"
             />
         </div>
@@ -37,4 +35,20 @@ export default {
 };
 </script>
 
-<style></style>
+<style lang="scss" scoped>
+.post-card {
+    width: 100%;
+    max-height: 300px;
+}
+
+.img-wrapper {
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+}
+.img-fluid {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+</style>
