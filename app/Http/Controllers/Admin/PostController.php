@@ -62,7 +62,7 @@ class PostController extends Controller
         $newPost = new Post();
         $newPost->fill($postData);
         $newPost->slug = Post::createSlug($postData["title"]);
-        $newPost->image = Storage::put("public/posts", $request->file("image"));
+        $newPost->image = Storage::put("posts", $request["image"]);
         $newPost->save();
 
         $newPost->tags()->sync($request->tags);
@@ -133,6 +133,7 @@ class PostController extends Controller
     public function destroy(Post $post)
     {
         if ($post) {
+            $post->tags()->sync([]);
             $post->delete();
         }
         return redirect()->route("admin.posts.index");
