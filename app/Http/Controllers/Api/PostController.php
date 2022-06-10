@@ -66,9 +66,30 @@ class PostController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show($slug)
     {
-        //
+        $post = Post::where("slug", $slug)
+            ->with("category", "tags")
+            ->first();
+
+        $result = [
+            "result" => [
+                "id" => $post->id,
+                "title" => $post->title,
+                "content" => $post->content,
+                "slug" => $post->slug,
+                "category" => $post->category->name,
+                "image" => $post->image,
+                "created_at" => $post->created_at->diffForHumans(),
+                "updated_at" => $post->updated_at->diffForHumans(),
+                "tags" => $post->tags->map(function ($tag) {
+                    return $tag->name;
+                }),
+            ],
+            "success" => true,
+        ];
+
+        return response()->json($result);
     }
 
     /**
