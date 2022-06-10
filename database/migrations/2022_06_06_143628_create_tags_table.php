@@ -15,10 +15,7 @@ class CreateTagsTable extends Migration
     public function up()
     {
         Schema::create("tags", function (Blueprint $table) {
-            $table
-                ->id()
-                ->onDelete("cascade")
-                ->onUpdate("cascade");
+            $table->id();
             $table->string("name");
             $table->timestamps();
         });
@@ -31,8 +28,8 @@ class CreateTagsTable extends Migration
      */
     public function down()
     {
-        DB::statement("SET FOREIGN_KEY_CHECKS = 0");
+        // DB::statement("SET FOREIGN_KEY_CHECKS = 0");
         Schema::dropIfExists("tags");
-        DB::statement("SET FOREIGN_KEY_CHECKS = 1");
+        // DB::statement("SET FOREIGN_KEY_CHECKS = 1");
     }
 }
