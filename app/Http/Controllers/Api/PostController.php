@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
 use App\Post;
+use App\Category;
 
 class PostController extends Controller
 {
@@ -16,9 +17,26 @@ class PostController extends Controller
      */
     public function index()
     {
-        $posts = Post::all();
+        // $posts = Post::all();
+        $posts = Post::with("category")->get();
+        $posts = $posts->map(function ($post) {
+            return [
+                "id" => $post->id,
+                "title" => $post->title,
+                "content" => $post->content,
+                "slug" => $post->slug,
+                "category" => $post->category->name,
+                "image" => $post->image,
+                "created_at" => $post->created_at->format("Y-m-d"),
+                "updated_at" => $post->updated_at->format("Y-m-d"),
+            ];
+        });
 
-        return response()->json($posts);
+        $result = [
+            "results" => $posts,
+            "success" => true,
+        ];
+        return response()->json($result);
     }
 
     /**
