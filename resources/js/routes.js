@@ -5,6 +5,7 @@ Vue.use(VueRouter);
 
 import HomeComponent from "./pages/HomeComponent.vue";
 import BlogComponent from "./pages/BlogComponent.vue";
+import BlogPostComponent from "./pages/BlogPostComponent.vue";
 
 const router = new VueRouter({
     mode: "history",
@@ -18,6 +19,11 @@ const router = new VueRouter({
             path: "/blog",
             name: "blog",
             component: BlogComponent,
+        },
+        {
+            path: "/blog/:slug",
+            name: "blog-post",
+            component: BlogPostComponent,
         },
     ],
 });
