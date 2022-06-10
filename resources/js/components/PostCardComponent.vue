@@ -11,7 +11,13 @@
             <p class="card-text mb-auto">
                 {{ post.content }}
             </p>
-            <a href="#" class="stretched-link">Continue reading</a>
+            <!-- <a href="#" class="stretched-link">Continue reading</a> -->
+            <router-link
+                class="stretched-link"
+                :to="{ name: 'blog-post', params: { slug: post.slug } }"
+            >
+                Continue reading
+            </router-link>
         </div>
         <div class="col m-0 p-0 img-wrapper">
             <img
