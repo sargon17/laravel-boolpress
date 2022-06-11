@@ -19,26 +19,16 @@ class PostController extends Controller
     {
         // $posts = Post::all();
         $posts = Post::with("category")
-            ->reorder("updated_at", "desc")
-            ->get();
-        $posts = $posts->map(function ($post) {
-            return [
-                "id" => $post->id,
-                "title" => $post->title,
-                "content" => $post->content,
-                "slug" => $post->slug,
-                "category" => $post->category->name,
-                "image" => $post->image,
-                "created_at" => $post->created_at->diffForHumans(),
-                "updated_at" => $post->updated_at->diffForHumans(),
-            ];
+            ->orderBy("created_at", "desc")
+            ->paginate(6);
+
+        $posts->map(function ($post) {
+            $post->category_name = $post->category->name;
+            $post->time_difference = $post->updated_at->diffForHumans();
+            return $post;
         });
 
-        $result = [
-            "results" => $posts,
-            "success" => true,
-        ];
-        return response()->json($result);
+        return response()->json($posts);
     }
 
     /**
