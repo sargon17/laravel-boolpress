@@ -77,10 +77,8 @@ class PostController extends Controller
                 "id" => $post->id,
                 "title" => $post->title,
                 "content" => $post->content,
-                "slug" => $post->slug,
                 "category" => $post->category->name,
                 "image" => $post->image,
-                "created_at" => $post->created_at->diffForHumans(),
                 "updated_at" => $post->updated_at->diffForHumans(),
                 "tags" => $post->tags->map(function ($tag) {
                     return $tag->name;
