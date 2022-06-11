@@ -29,8 +29,8 @@ class PostController extends Controller
                 "slug" => $post->slug,
                 "category" => $post->category->name,
                 "image" => $post->image,
-                "created_at" => $post->created_at->format("Y-m-d"),
-                "updated_at" => $post->updated_at->format("Y-m-d"),
+                "created_at" => $post->created_at->diffForHumans(),
+                "updated_at" => $post->updated_at->diffForHumans(),
             ];
         });
 
