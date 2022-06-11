@@ -49,12 +49,20 @@ class PostController extends Controller
                 "title" => "required|max:250",
                 "content" => "required",
                 "category_id" => "required|exists:categories,id",
+                "image" => "image|mimes:jpeg,png,jpg,gif,svg|max:2048",
             ],
             [
                 "title.required" => "The title is required",
                 "title.max" =>
                     "The title may not be greater than 250 characters",
                 "content.required" => "The content is required",
+                "category_id.required" => "The category is required",
+                "category_id.exists" => "The category does not exist",
+                "image.image" => "The image must be an image",
+                "image.mimes" =>
+                    "The image must be a file of type: jpeg, png, jpg, gif, svg",
+                "image.max" =>
+                    "The image may not be greater than 2048 kilobytes",
             ]
         );
 
@@ -62,7 +70,9 @@ class PostController extends Controller
         $newPost = new Post();
         $newPost->fill($postData);
         $newPost->slug = Post::createSlug($postData["title"]);
-        $newPost->image = Storage::put("posts", $request["image"]);
+        $newPost->image = $request["image"]
+            ? Storage::put("posts", $request["image"])
+            : null;
         $newPost->save();
 
         $newPost->tags()->sync($request->tags);
