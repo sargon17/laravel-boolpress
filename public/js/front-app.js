@@ -2109,6 +2109,33 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   name: "BlogComponent",
@@ -2123,13 +2150,13 @@ __webpack_require__.r(__webpack_exports__);
     PostCard: _components_PostCardComponent_vue__WEBPACK_IMPORTED_MODULE_0__["default"]
   },
   mounted: function mounted() {
-    this.getPosts();
+    this.getPosts(this.current_page);
   },
   methods: {
-    getPosts: function getPosts() {
+    getPosts: function getPosts(page) {
       var _this = this;
 
-      window.axios.get("/api/posts").then(function (response) {
+      window.axios.get("/api/posts?page=" + page).then(function (response) {
         _this.posts = response.data.data;
         _this.last_page = response.data.last_page;
         _this.current_page = response.data.current_page;
@@ -2138,27 +2165,23 @@ __webpack_require__.r(__webpack_exports__);
         console.log(error);
       });
     },
-    changePage: function changePage(page) {
-      var _this2 = this;
-
-      window.axios.get("/api/posts?page=" + page).then(function (response) {
-        _this2.posts = response.data.data;
-        _this2.last_page = response.data.last_page;
-        _this2.current_page = response.data.current_page;
-        console.log(_this2.posts);
-      })["catch"](function (error) {
-        console.log(error);
-      });
-    },
     previousPage: function previousPage() {
       if (this.current_page > 1) {
-        this.changePage(this.current_page - 1);
+        this.getPosts(this.current_page - 1);
+        this.scrollTop();
       }
     },
     nextPage: function nextPage() {
       if (this.current_page < this.last_page) {
-        this.changePage(this.current_page + 1);
+        this.getPosts(this.current_page + 1);
+        this.scrollTop();
       }
+    },
+    scrollTop: function scrollTop() {
+      window.scrollTo({
+        top: 0,
+        behavior: "smooth"
+      });
     }
   }
 });
@@ -38772,84 +38795,139 @@ var render = function () {
       1
     ),
     _vm._v(" "),
-    _c("div", { staticClass: "row justify-content-center" }, [
-      _c("div", { staticClass: "col" }, [
-        _c("nav", { attrs: { "aria-label": "pagination" } }, [
-          _c(
-            "ul",
-            { staticClass: "pagination" },
-            [
-              _c("li", { staticClass: "page-item" }, [
+    _c("div", { staticClass: "row" }, [
+      _c(
+        "div",
+        {
+          staticClass:
+            "col-12 d-flex justify-content-center align-items-center",
+        },
+        [
+          _c("nav", { attrs: { "aria-label": "pagination" } }, [
+            _c(
+              "ul",
+              { staticClass: "pagination" },
+              [
                 _c(
-                  "a",
-                  {
-                    staticClass: "page-link",
-                    attrs: { href: "#", "aria-label": "Previous" },
-                    on: {
-                      click: function () {
-                        return _vm.previousPage()
-                      },
-                    },
-                  },
-                  [
-                    _c("span", { attrs: { "aria-hidden": "true" } }, [
-                      _vm._v("«"),
-                    ]),
-                  ]
-                ),
-              ]),
-              _vm._v(" "),
-              _vm._l(_vm.last_page, function (page) {
-                return _c(
                   "li",
                   {
-                    key: page,
                     class:
                       "page-item" +
-                      (page === _vm.current_page ? " active" : ""),
+                      // (current_page === 1 ? 'disabled' : '')
+                      "disabled",
                   },
                   [
-                    _c(
-                      "a",
-                      {
-                        staticClass: "page-link",
-                        attrs: { href: "#" },
-                        on: {
-                          click: function () {
-                            return _vm.changePage(page)
+                    _vm.current_page !== 1
+                      ? _c(
+                          "a",
+                          {
+                            staticClass: "page-link",
+                            attrs: { href: "#", "aria-label": "Previous" },
+                            on: {
+                              click: function ($event) {
+                                $event.preventDefault()
+                                return function () {
+                                  return _vm.previousPage()
+                                }.apply(null, arguments)
+                              },
+                            },
                           },
-                        },
-                      },
-                      [_vm._v(_vm._s(page))]
-                    ),
-                  ]
-                )
-              }),
-              _vm._v(" "),
-              _c("li", { staticClass: "page-item" }, [
-                _c(
-                  "a",
-                  {
-                    staticClass: "page-link",
-                    attrs: { href: "#", "aria-label": "Next" },
-                    on: {
-                      click: function () {
-                        return _vm.nextPage()
-                      },
-                    },
-                  },
-                  [
-                    _c("span", { attrs: { "aria-hidden": "true" } }, [
-                      _vm._v("»"),
-                    ]),
+                          [
+                            _c("span", { attrs: { "aria-hidden": "true" } }, [
+                              _vm._v("«"),
+                            ]),
+                          ]
+                        )
+                      : _c(
+                          "span",
+                          {
+                            staticClass: "page-link",
+                            attrs: { "aria-hidden": "true" },
+                          },
+                          [_vm._v("«")]
+                        ),
                   ]
                 ),
-              ]),
-            ],
-            2
-          ),
-        ]),
-      ]),
+                _vm._v(" "),
+                _vm._l(_vm.last_page, function (page) {
+                  return _c(
+                    "li",
+                    {
+                      key: page,
+                      class:
+                        "page-item" +
+                        (page === _vm.current_page ? " active" : ""),
+                    },
+                    [
+                      _c(
+                        "a",
+                        {
+                          staticClass: "page-link",
+                          attrs: { href: "#" },
+                          on: {
+                            click: function ($event) {
+                              $event.preventDefault()
+                              return function () {
+                                if (page === _vm.current_page) {
+                                  return
+                                }
+                                _vm.getPosts(page)
+                                _vm.scrollTop()
+                              }.apply(null, arguments)
+                            },
+                          },
+                        },
+                        [_vm._v(_vm._s(page))]
+                      ),
+                    ]
+                  )
+                }),
+                _vm._v(" "),
+                _c(
+                  "li",
+                  {
+                    class:
+                      "page-item" +
+                      (_vm.current_page == _vm.last_page ? "disabled" : ""),
+                  },
+                  [
+                    _vm.current_page !== _vm.last_page
+                      ? _c(
+                          "a",
+                          {
+                            staticClass: "page-link",
+                            attrs: { href: "", "aria-label": "Next" },
+                            on: {
+                              click: function ($event) {
+                                $event.preventDefault()
+                                return function () {
+                                  return _vm.nextPage()
+                                }.apply(null, arguments)
+                              },
+                            },
+                          },
+                          [
+                            _c("span", { attrs: { "aria-hidden": "true" } }, [
+                              _vm._v("»"),
+                            ]),
+                          ]
+                        )
+                      : _c(
+                          "span",
+                          {
+                            staticClass: "page-link",
+                            attrs: { "aria-hidden": "true" },
+                          },
+                          [_vm._v("»")]
+                        ),
+                  ]
+                ),
+              ],
+              2
+            ),
+          ]),
+        ]
+      ),
     ]),
   ])
 }
