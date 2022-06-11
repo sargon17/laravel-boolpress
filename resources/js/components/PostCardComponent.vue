@@ -4,10 +4,10 @@
     >
         <div class="col p-4 d-flex flex-column position-static">
             <strong class="d-inline-block mb-2 text-primary">
-                {{ post.category }}
+                {{ post.category_name }}
             </strong>
             <h3 class="mb-0">{{ post.title }}</h3>
-            <div class="mb-1 text-muted">{{ post.created_at }}</div>
+            <div class="mb-1 text-muted">{{ post.time_difference }}</div>
             <p class="card-text mb-auto">
                 {{ textShorten(post.content, textLengthOnScreen()) }}
             </p>
@@ -106,12 +106,12 @@ p {
 
 .post-card {
     width: 100%;
-    max-height: 300px;
-    min-height: 250px;
+    // max-height: 300px;
+    // min-height: 250px;
 
-    @media screen and (max-width: 600px) {
-        min-height: 200px;
-    }
+    // @media screen and (max-width: 600px) {
+    //     min-height: 200px;
+    // }
 }
 
 .img-wrapper {

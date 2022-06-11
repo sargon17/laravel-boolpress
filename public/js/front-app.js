@@ -2066,12 +2066,57 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   name: "BlogComponent",
   data: function data() {
     return {
-      posts: []
+      posts: [],
+      last_page: 0,
+      current_page: 1
     };
   },
   components: {
@@ -2085,11 +2130,35 @@ __webpack_require__.r(__webpack_exports__);
       var _this = this;
 
       window.axios.get("/api/posts").then(function (response) {
-        console.log(response);
-        _this.posts = response.data.results;
+        _this.posts = response.data.data;
+        _this.last_page = response.data.last_page;
+        _this.current_page = response.data.current_page;
+        console.log(_this.posts);
       })["catch"](function (error) {
         console.log(error);
       });
+    },
+    changePage: function changePage(page) {
+      var _this2 = this;
+
+      window.axios.get("/api/posts?page=" + page).then(function (response) {
+        _this2.posts = response.data.data;
+        _this2.last_page = response.data.last_page;
+        _this2.current_page = response.data.current_page;
+        console.log(_this2.posts);
+      })["catch"](function (error) {
+        console.log(error);
+      });
+    },
+    previousPage: function previousPage() {
+      if (this.current_page > 1) {
+        this.changePage(this.current_page - 1);
+      }
+    },
+    nextPage: function nextPage() {
+      if (this.current_page < this.last_page) {
+        this.changePage(this.current_page + 1);
+      }
     }
   }
 });
@@ -6620,7 +6689,7 @@ exports = module.exports = __webpack_require__(/*! ../../../node_modules/css-loa
 
 
 // module
-exports.push([module.i, "h3[data-v-98af649c] {\n  font-size: 1.5rem;\n}\n@media screen and (max-width: 600px) {\nh3[data-v-98af649c] {\n    font-size: 1.2rem;\n}\n}\n@media screen and (max-width: 400px) {\nh3[data-v-98af649c] {\n    font-size: 1rem;\n}\n}\n@media screen and (max-width: 600px) {\np[data-v-98af649c] {\n    font-size: 0.9rem;\n}\n}\n@media screen and (max-width: 400px) {\np[data-v-98af649c] {\n    font-size: 0.7rem;\n}\n}\n.post-card[data-v-98af649c] {\n  width: 100%;\n  max-height: 300px;\n  min-height: 250px;\n}\n@media screen and (max-width: 600px) {\n.post-card[data-v-98af649c] {\n    min-height: 200px;\n}\n}\n.img-wrapper[data-v-98af649c] {\n  width: 100%;\n  height: 100%;\n  overflow: hidden;\n}\n.img-fluid[data-v-98af649c] {\n  width: 100%;\n  height: 100%;\n  -o-object-fit: cover;\n     object-fit: cover;\n}", ""]);
+exports.push([module.i, "h3[data-v-98af649c] {\n  font-size: 1.5rem;\n}\n@media screen and (max-width: 600px) {\nh3[data-v-98af649c] {\n    font-size: 1.2rem;\n}\n}\n@media screen and (max-width: 400px) {\nh3[data-v-98af649c] {\n    font-size: 1rem;\n}\n}\n@media screen and (max-width: 600px) {\np[data-v-98af649c] {\n    font-size: 0.9rem;\n}\n}\n@media screen and (max-width: 400px) {\np[data-v-98af649c] {\n    font-size: 0.7rem;\n}\n}\n.post-card[data-v-98af649c] {\n  width: 100%;\n}\n.img-wrapper[data-v-98af649c] {\n  width: 100%;\n  height: 100%;\n  overflow: hidden;\n}\n.img-fluid[data-v-98af649c] {\n  width: 100%;\n  height: 100%;\n  -o-object-fit: cover;\n     object-fit: cover;\n}", ""]);
 
 // exports
 
@@ -38612,13 +38681,15 @@ var render = function () {
         { staticClass: "col p-4 d-flex flex-column position-static" },
         [
           _c("strong", { staticClass: "d-inline-block mb-2 text-primary" }, [
-            _vm._v("\n            " + _vm._s(_vm.post.category) + "\n        "),
+            _vm._v(
+              "\n            " + _vm._s(_vm.post.category_name) + "\n        "
+            ),
           ]),
           _vm._v(" "),
           _c("h3", { staticClass: "mb-0" }, [_vm._v(_vm._s(_vm.post.title))]),
           _vm._v(" "),
           _c("div", { staticClass: "mb-1 text-muted" }, [
-            _vm._v(_vm._s(_vm.post.created_at)),
+            _vm._v(_vm._s(_vm.post.time_difference)),
           ]),
           _vm._v(" "),
           _c("p", { staticClass: "card-text mb-auto" }, [
@@ -38700,6 +38771,86 @@ var render = function () {
       }),
       1
     ),
+    _vm._v(" "),
+    _c("div", { staticClass: "row justify-content-center" }, [
+      _c("div", { staticClass: "col" }, [
+        _c("nav", { attrs: { "aria-label": "pagination" } }, [
+          _c(
+            "ul",
+            { staticClass: "pagination" },
+            [
+              _c("li", { staticClass: "page-item" }, [
+                _c(
+                  "a",
+                  {
+                    staticClass: "page-link",
+                    attrs: { href: "#", "aria-label": "Previous" },
+                    on: {
+                      click: function () {
+                        return _vm.previousPage()
+                      },
+                    },
+                  },
+                  [
+                    _c("span", { attrs: { "aria-hidden": "true" } }, [
+                      _vm._v("«"),
+                    ]),
+                  ]
+                ),
+              ]),
+              _vm._v(" "),
+              _vm._l(_vm.last_page, function (page) {
+                return _c(
+                  "li",
+                  {
+                    key: page,
+                    class:
+                      "page-item" +
+                      (page === _vm.current_page ? " active" : ""),
+                  },
+                  [
+                    _c(
+                      "a",
+                      {
+                        staticClass: "page-link",
+                        attrs: { href: "#" },
+                        on: {
+                          click: function () {
+                            return _vm.changePage(page)
+                          },
+                        },
+                      },
+                      [_vm._v(_vm._s(page))]
+                    ),
+                  ]
+                )
+              }),
+              _vm._v(" "),
+              _c("li", { staticClass: "page-item" }, [
+                _c(
+                  "a",
+                  {
+                    staticClass: "page-link",
+                    attrs: { href: "#", "aria-label": "Next" },
+                    on: {
+                      click: function () {
+                        return _vm.nextPage()
+                      },
+                    },
+                  },
+                  [
+                    _c("span", { attrs: { "aria-hidden": "true" } }, [
+                      _vm._v("»"),
+                    ]),
+                  ]
+                ),
+              ]),
+            ],
+            2
+          ),
+        ]),
+      ]),
+    ]),
   ])
 }
 var staticRenderFns = []
