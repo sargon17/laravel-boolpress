@@ -1,6 +1,6 @@
 <template>
     <div class="container">
-        <div class="row mb-2">
+        <div class="row">
             <PostCard v-for="post in posts" :key="post.id" :post="post" />
         </div>
     </div>

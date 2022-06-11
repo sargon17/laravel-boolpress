@@ -1,5 +1,24 @@
 <template>
     <div>
+        <!-- internal navigation -->
+        <div class="row">
+            <div class="col-md-12">
+                <nav aria-label="breadcrumb">
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item">
+                            <router-link to="/">Home</router-link>
+                        </li>
+                        <li class="breadcrumb-item">
+                            <router-link to="/blog">Blog</router-link>
+                        </li>
+                        <li class="breadcrumb-item active" aria-current="page">
+                            {{ post.title }}
+                        </li>
+                    </ol>
+                </nav>
+            </div>
+        </div>
+        <!-- /internal navigation -->
         <div class="container mt-5">
             <div class="row">
                 <div class="col-lg-8">
@@ -98,4 +117,8 @@ export default {
 };
 </script>
 
-<style></style>
+<style lang="scss" scoped>
+img {
+    width: 100%;
+}
+</style>
