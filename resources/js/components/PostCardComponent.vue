@@ -9,7 +9,7 @@
             <h3 class="mb-0">{{ post.title }}</h3>
             <div class="mb-1 text-muted">{{ post.created_at }}</div>
             <p class="card-text mb-auto">
-                {{ post.content }}
+                {{ textShorten(post.content, 250) }}
             </p>
             <!-- <a href="#" class="stretched-link">Continue reading</a> -->
             <router-link
@@ -21,8 +21,15 @@
         </div>
         <div class="col m-0 p-0 img-wrapper">
             <img
+                v-if="post.image"
                 class="img-fluid"
                 :src="'/storage/' + post.image"
+                :alt="post.title"
+            />
+            <img
+                v-else
+                class="img-fluid"
+                src="https://images.unsplash.com/photo-1552308995-2baac1ad5490?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1170&q=80"
                 :alt="post.title"
             />
         </div>
@@ -36,6 +43,13 @@ export default {
         post: {
             type: Object,
             required: true,
+        },
+    },
+    methods: {
+        textShorten(text, limit) {
+            if (text.length < limit) return text;
+            const shortText = text.substring(0, limit);
+            return shortText + "...";
         },
     },
 };

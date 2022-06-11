@@ -1996,12 +1996,26 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   name: "PostCard",
   props: {
     post: {
       type: Object,
       required: true
+    }
+  },
+  methods: {
+    textShorten: function textShorten(text, limit) {
+      if (text.length < limit) return text;
+      var shortText = text.substring(0, limit);
+      return shortText + "...";
     }
   }
 });
@@ -38514,7 +38528,11 @@ var render = function () {
           ]),
           _vm._v(" "),
           _c("p", { staticClass: "card-text mb-auto" }, [
-            _vm._v("\n            " + _vm._s(_vm.post.content) + "\n        "),
+            _vm._v(
+              "\n            " +
+                _vm._s(_vm.textShorten(_vm.post.content, 250)) +
+                "\n        "
+            ),
           ]),
           _vm._v(" "),
           _c(
@@ -38532,10 +38550,18 @@ var render = function () {
       ),
       _vm._v(" "),
       _c("div", { staticClass: "col m-0 p-0 img-wrapper" }, [
-        _c("img", {
-          staticClass: "img-fluid",
-          attrs: { src: "/storage/" + _vm.post.image, alt: _vm.post.title },
-        }),
+        _vm.post.image
+          ? _c("img", {
+              staticClass: "img-fluid",
+              attrs: { src: "/storage/" + _vm.post.image, alt: _vm.post.title },
+            })
+          : _c("img", {
+              staticClass: "img-fluid",
+              attrs: {
+                src: "https://images.unsplash.com/photo-1552308995-2baac1ad5490?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1170&q=80",
+                alt: _vm.post.title,
+              },
+            }),
       ]),
     ]
   )
