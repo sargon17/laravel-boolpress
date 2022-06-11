@@ -49,7 +49,7 @@ class PostController extends Controller
                 "title" => "required|max:250",
                 "content" => "required",
                 "category_id" => "required|exists:categories,id",
-                "image" => "image|mimes:jpeg,png,jpg,gif,svg|max:2048",
+                "image" => "image|mimes:jpeg,png,jpg,gif,svg,webp|max:2048",
             ],
             [
                 "title.required" => "The title is required",
@@ -60,7 +60,7 @@ class PostController extends Controller
                 "category_id.exists" => "The category does not exist",
                 "image.image" => "The image must be an image",
                 "image.mimes" =>
-                    "The image must be a file of type: jpeg, png, jpg, gif, svg",
+                    "The image must be a file of type: jpeg, png, jpg, gif, svg, webp",
                 "image.max" =>
                     "The image may not be greater than 2048 kilobytes",
             ]
