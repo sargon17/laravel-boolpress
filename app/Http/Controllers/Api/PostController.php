@@ -18,7 +18,9 @@ class PostController extends Controller
     public function index()
     {
         // $posts = Post::all();
-        $posts = Post::with("category")->get();
+        $posts = Post::with("category")
+            ->reorder("updated_at", "desc")
+            ->get();
         $posts = $posts->map(function ($post) {
             return [
                 "id" => $post->id,
