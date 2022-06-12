@@ -2136,6 +2136,61 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   name: "BlogComponent",
@@ -2143,20 +2198,29 @@ __webpack_require__.r(__webpack_exports__);
     return {
       posts: [],
       last_page: 0,
-      current_page: 1
+      current_page: 1,
+      categories: [],
+      selected_category: "all"
     };
   },
   components: {
     PostCard: _components_PostCardComponent_vue__WEBPACK_IMPORTED_MODULE_0__["default"]
   },
   mounted: function mounted() {
-    this.getPosts(this.current_page);
+    this.getPosts(this.current_page, 1);
+    this.getCategories();
   },
   methods: {
-    getPosts: function getPosts(page) {
+    getPosts: function getPosts(page, category) {
       var _this = this;
 
-      window.axios.get("/api/posts?page=" + page).then(function (response) {
+      var params = {
+        // category_id: category,
+        page: page
+      };
+      window.axios.get("/api/posts", {
+        params: params
+      }).then(function (response) {
         _this.posts = response.data.data;
         _this.last_page = response.data.last_page;
         _this.current_page = response.data.current_page;
@@ -2181,6 +2245,16 @@ __webpack_require__.r(__webpack_exports__);
       window.scrollTo({
         top: 0,
         behavior: "smooth"
+      });
+    },
+    getCategories: function getCategories() {
+      var _this2 = this;
+
+      window.axios.get("/api/categories").then(function (response) {
+        _this2.categories = response.data;
+        console.log(_this2.categories);
+      })["catch"](function (error) {
+        console.log(error);
       });
     }
   }
@@ -38785,153 +38859,223 @@ var render = function () {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("div", { staticClass: "container" }, [
-    _c(
-      "div",
-      { staticClass: "row" },
-      _vm._l(_vm.posts, function (post) {
-        return _c("PostCard", { key: post.id, attrs: { post: post } })
-      }),
-      1
-    ),
-    _vm._v(" "),
+  return _c("div", { staticClass: "container-fluid" }, [
     _c("div", { staticClass: "row" }, [
-      _c(
-        "div",
-        {
-          staticClass:
-            "col-12 d-flex justify-content-center align-items-center",
-        },
-        [
-          _c("nav", { attrs: { "aria-label": "pagination" } }, [
+      _c("div", { staticClass: "col-2" }, [
+        _c("div", { staticClass: "sidebar" }, [
+          _vm._m(0),
+          _vm._v(" "),
+          _c("div", { staticClass: "sidebar-content" }, [
             _c(
               "ul",
-              { staticClass: "pagination" },
+              { staticClass: "list-group" },
               [
                 _c(
                   "li",
                   {
                     class:
-                      "page-item" +
-                      // (current_page === 1 ? 'disabled' : '')
-                      "disabled",
+                      "list-group-item list-group-item-action" +
+                      (_vm.selected_category == "all" ? " active" : ""),
                   },
                   [
-                    _vm.current_page !== 1
-                      ? _c(
-                          "a",
-                          {
-                            staticClass: "page-link",
-                            attrs: { href: "#", "aria-label": "Previous" },
-                            on: {
-                              click: function ($event) {
-                                $event.preventDefault()
-                                return function () {
-                                  return _vm.previousPage()
-                                }.apply(null, arguments)
-                              },
-                            },
-                          },
-                          [
-                            _c("span", { attrs: { "aria-hidden": "true" } }, [
-                              _vm._v("«"),
-                            ]),
-                          ]
-                        )
-                      : _c(
-                          "span",
-                          {
-                            staticClass: "page-link",
-                            attrs: { "aria-hidden": "true" },
-                          },
-                          [_vm._v("«")]
-                        ),
+                    _vm._v(
+                      "\n                            All\n                        "
+                    ),
                   ]
                 ),
                 _vm._v(" "),
-                _vm._l(_vm.last_page, function (page) {
+                _vm._l(_vm.categories, function (category) {
                   return _c(
                     "li",
                     {
-                      key: page,
-                      class:
-                        "page-item" +
-                        (page === _vm.current_page ? " active" : ""),
+                      key: category.id,
+                      staticClass: "list-group-item list-group-item-action",
                     },
                     [
-                      _c(
-                        "a",
-                        {
-                          staticClass: "page-link",
-                          attrs: { href: "#" },
-                          on: {
-                            click: function ($event) {
-                              $event.preventDefault()
-                              return function () {
-                                if (page === _vm.current_page) {
-                                  return
-                                }
-                                _vm.getPosts(page)
-                                _vm.scrollTop()
-                              }.apply(null, arguments)
-                            },
-                          },
-                        },
-                        [_vm._v(_vm._s(page))]
+                      _vm._v(
+                        "\n                            " +
+                          _vm._s(category.name) +
+                          "\n                        "
                       ),
                     ]
                   )
                 }),
-                _vm._v(" "),
-                _c(
-                  "li",
-                  {
-                    class:
-                      "page-item" +
-                      (_vm.current_page == _vm.last_page ? "disabled" : ""),
-                  },
-                  [
-                    _vm.current_page !== _vm.last_page
-                      ? _c(
-                          "a",
-                          {
-                            staticClass: "page-link",
-                            attrs: { href: "", "aria-label": "Next" },
-                            on: {
-                              click: function ($event) {
-                                $event.preventDefault()
-                                return function () {
-                                  return _vm.nextPage()
-                                }.apply(null, arguments)
-                              },
-                            },
-                          },
-                          [
-                            _c("span", { attrs: { "aria-hidden": "true" } }, [
-                              _vm._v("»"),
-                            ]),
-                          ]
-                        )
-                      : _c(
-                          "span",
-                          {
-                            staticClass: "page-link",
-                            attrs: { "aria-hidden": "true" },
-                          },
-                          [_vm._v("»")]
-                        ),
-                  ]
-                ),
               ],
               2
             ),
           ]),
-        ]
-      ),
+        ]),
+      ]),
+      _vm._v(" "),
+      _c("div", { staticClass: "col-10" }, [
+        _c("div", { staticClass: "container" }, [
+          _c(
+            "div",
+            { staticClass: "row" },
+            _vm._l(_vm.posts, function (post) {
+              return _c("PostCard", { key: post.id, attrs: { post: post } })
+            }),
+            1
+          ),
+          _vm._v(" "),
+          _c("div", { staticClass: "row" }, [
+            _c(
+              "div",
+              {
+                staticClass:
+                  "col-12 d-flex justify-content-center align-items-center",
+              },
+              [
+                _c("nav", { attrs: { "aria-label": "pagination" } }, [
+                  _c(
+                    "ul",
+                    { staticClass: "pagination" },
+                    [
+                      _c(
+                        "li",
+                        {
+                          class:
+                            "page-item" +
+                            // (current_page === 1 ? 'disabled' : '')
+                            " disabled",
+                        },
+                        [
+                          _vm.current_page !== 1
+                            ? _c(
+                                "a",
+                                {
+                                  staticClass: "page-link",
+                                  attrs: {
+                                    href: "#",
+                                    "aria-label": "Previous",
+                                  },
+                                  on: {
+                                    click: function ($event) {
+                                      $event.preventDefault()
+                                      return function () {
+                                        return _vm.previousPage()
+                                      }.apply(null, arguments)
+                                    },
+                                  },
+                                },
+                                [
+                                  _c(
+                                    "span",
+                                    { attrs: { "aria-hidden": "true" } },
+                                    [_vm._v("«")]
+                                  ),
+                                ]
+                              )
+                            : _c(
+                                "span",
+                                {
+                                  staticClass: "page-link",
+                                  attrs: { "aria-hidden": "true" },
+                                },
+                                [_vm._v("«")]
+                              ),
+                        ]
+                      ),
+                      _vm._v(" "),
+                      _vm._l(_vm.last_page, function (page) {
+                        return _c(
+                          "li",
+                          {
+                            key: page,
+                            class:
+                              "page-item" +
+                              (page === _vm.current_page ? " active" : ""),
+                          },
+                          [
+                            _c(
+                              "a",
+                              {
+                                staticClass: "page-link",
+                                attrs: { href: "#" },
+                                on: {
+                                  click: function ($event) {
+                                    $event.preventDefault()
+                                    return function () {
+                                      if (page === _vm.current_page) {
+                                        return
+                                      }
+                                      _vm.getPosts(page)
+                                      _vm.scrollTop()
+                                    }.apply(null, arguments)
+                                  },
+                                },
+                              },
+                              [_vm._v(_vm._s(page))]
+                            ),
+                          ]
+                        )
+                      }),
+                      _vm._v(" "),
+                      _c(
+                        "li",
+                        {
+                          class:
+                            "page-item" +
+                            (_vm.current_page == _vm.last_page
+                              ? " disabled"
+                              : ""),
+                        },
+                        [
+                          _vm.current_page !== _vm.last_page
+                            ? _c(
+                                "a",
+                                {
+                                  staticClass: "page-link",
+                                  attrs: { href: "", "aria-label": "Next" },
+                                  on: {
+                                    click: function ($event) {
+                                      $event.preventDefault()
+                                      return function () {
+                                        return _vm.nextPage()
+                                      }.apply(null, arguments)
+                                    },
+                                  },
+                                },
+                                [
+                                  _c(
+                                    "span",
+                                    { attrs: { "aria-hidden": "true" } },
+                                    [_vm._v("»")]
+                                  ),
+                                ]
+                              )
+                            : _c(
+                                "span",
+                                {
+                                  staticClass: "page-link",
+                                  attrs: { "aria-hidden": "true" },
+                                },
+                                [_vm._v("»")]
+                              ),
+                        ]
+                      ),
+                    ],
+                    2
+                  ),
+                ]),
+              ]
+            ),
+          ]),
+        ]),
+      ]),
     ]),
   ])
 }
-var staticRenderFns = []
+var staticRenderFns = [
+  function () {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "sidebar-header" }, [
+      _c("h3", [_vm._v("Categories")]),
+    ])
+  },
+]
 render._withStripped = true
 
 
