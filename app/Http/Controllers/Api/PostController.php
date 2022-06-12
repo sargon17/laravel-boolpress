@@ -17,7 +17,6 @@ class PostController extends Controller
      */
     public function index()
     {
-        // $posts = Post::all();
         $posts = Post::with("category")
             ->orderBy("created_at", "desc")
             ->paginate(6);
@@ -36,6 +35,23 @@ class PostController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
+
+    public function filterByCategory($category_id)
+    {
+        $posts = Post::with("category")
+            ->where("category_id", $category_id)
+            ->orderBy("created_at", "desc")
+            ->paginate(6);
+
+        $posts->map(function ($post) {
+            $post->category_name = $post->category->name;
+            $post->time_difference = $post->updated_at->diffForHumans();
+            return $post;
+        });
+
+        return response()->json($posts);
+    }
+
     public function create()
     {
         //
